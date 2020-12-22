@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Tugas 15</title>
+    <style>
+        h1,
+        h3 {
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        .center {
+            text-align: center;
+        }
+
+        .container {
+            width: 60%;
+            margin: 0 auto;
+            background-color: lightblue;
+            border-radius: 20px;
+            padding: 20px;
+            margin-bottom: 10%;
+            margin-top: 2%;
+        }
+
+        .pt15 {
+            padding-top: 15px;
+        }
+
+        .hr {
+            border: 1px solid black;
+        }
+
+        form {
+            padding: 25px;
+            /* background-color: salmon; */
+            max-width: 30%;
+            margin: 0 auto;
+        }
+
+        .input {
+            border-radius: 5px;
+            box-shadow: 2px 2px #888888;
+            border: 1px solid #ccc;
+            font-size: 1rem;
+            padding: 10px;
+            width: 100%;
+            margin: 5px 0;
+        }
+
+        .button {
+            background-color: #d9d9d9;
+            border-radius: 5px;
+            box-shadow: 2px 2px #8888;
+            border: none;
+            font-size: 1rem;
+            margin-top: 20px;
+            padding: 10px;
+            width: 110%;
+            justify-self: start;
+        }
+
+        .button:hover {
+            background-color: salmon;
+        }
+
+        #diskon {
+            color: red;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h3 class="pt15">Tugas 15</h3>
+        <h1 class="center">Toko Semen Jaya Abadi</h1>
+        <form onsubmit="return false">
+            <label>Masukkan Merk Semen: </label>
+            <br>
+            <input type="text" class="input" id="merk_semen" placeholder="Merk Semen" autofocus autocomplete="off" />
+            <br><br>
+            <label>Masukkan Harga per Sak: </label>
+            <br>
+            <input type="text" class="input" id="harga_persak" value="85000" placeholder="Harga Satuan"
+                autocomplete="off" />
+            <br><br>
+            <label>Masukkan Jumlah Pembelian: </label>
+            <br>
+            <input type="text" class="input" id="jml_pembelian" placeholder="Jumlah Pembelian" autocomplete="off" />
+            <br><br>
+            <button id="submit" class="button">Checkout Sekarang</button>
+        </form>
+
+        <hr class="hr" />
+        <h3>Informasi: <span id="proses"></span></h3>
+        <h3>Merk Semen: <span id="merk"></span></h3>
+        <h3>Jumlah Pembelian: <span id="jumlah"></span></h3>
+        <h3>Harga Semen: <span id="harga_semen"></span></h3>
+        <h3>Pengiriman: <span id="pengiriman"></span></h3>
+        <h3>Diskon: <span id="diskon"></span></h3>
+        <h3><u>Total Biaya yang Harus Dibayar:</u> <span id="total">Rp0,-</span></h3>
+    </div>
+</body>
+
+<script>
+    // jika tombol submit ditekan tampilkan hasil nya
+    document.getElementById("submit").
+        addEventListener("click", hasil);
+
+    function hasil() {
+        let merk_semen = document.getElementById("merk_semen").value;
+        let harga_persak = document.getElementById("harga_persak").value;
+        let jml_pembelian = document.getElementById("jml_pembelian").value;
+
+        if (merk_semen != "" && harga_persak != "" && jml_pembelian != "") {
+            if (jml_pembelian <= 10) {
+                let pengiriman = 5000;
+                let harga_semen = harga_persak * jml_pembelian;
+                let total_pengiriman = harga_semen + pengiriman;
+                document.getElementById("proses").innerHTML = "Biaya Pengiriman ditanggung oleh pembeli sebesar Rp.5.000,-";
+                document.getElementById("merk").innerHTML = merk_semen;
+                document.getElementById("jumlah").innerHTML = jml_pembelian;
+                document.getElementById("harga_semen").innerHTML = "Rp" + formatRupiah(harga_semen) + ",-";
+                document.getElementById("pengiriman").innerHTML = "Rp5.000,-";
+                document.getElementById("diskon").innerHTML = "Rp0,-";
+                document.getElementById("total").innerHTML = "Rp" + formatRupiah(total_pengiriman) + ",-";
+            } else {
+                let harga_semen = harga_persak * jml_pembelian;
+                let diskon = harga_semen * 0.05;
+                let total_diskon = harga_semen - diskon;
+                document.getElementById("proses").innerHTML = "Selamat Pembeli mendapat diskon 5%";
+                document.getElementById("merk").innerHTML = merk_semen;
+                document.getElementById("jumlah").innerHTML = jml_pembelian;
+                document.getElementById("harga_semen").innerHTML = "Rp" + formatRupiah(harga_semen) + ",-";
+                document.getElementById("pengiriman").innerHTML = "Rp0,-";
+                document.getElementById("diskon").innerHTML = "5% (-Rp" + formatRupiah(diskon) + ",-)";
+                document.getElementById("total").innerHTML = "Rp" + formatRupiah(total_diskon) + ",-";
+            }
+        } else {
+            alert('Anda harus mengisi data dengan lengkap !');
+        }
+
+    }
+
+    function formatRupiah(angka) {
+        let reverse = angka.toString().split('').reverse().join(''),
+            ribuan = reverse.match(/\d{1,3}/g);
+        ribuan = ribuan.join('.').split('').reverse().join('');
+        return ribuan;
+    }
+</script>
+
+</html>
